@@ -4,16 +4,23 @@ import Button from '../button/Button'
 import btnStyle from './../button/button.module.scss'
 
 const Form = () => {
-  const [title, setTitle] = useState('')
-  const [autor, setAutor] = useState('')
-  const [content, setContent] = useState('')
   const [limitContent, setLimitContent] = useState('')
   const [show, setShow] = useState(false)
 
+  const [blogInfo, setBlogInfo] = useState({
+    title: '',
+    autor: '',
+    content: '',
+  })
+
+  function handleInputChange(e) {
+    setBlogInfo({ ...blogInfo, [e.target.name]: e.target.value })
+  }
+
   function handleContent(e) {
     const text = e.target.value
-    setContent(text)
-    setLimitContent(text.slice(0, 70))
+    setBlogInfo({ ...blogInfo, content: text })
+    setLimitContent(blogInfo.content.slice(0, 70))
   }
 
   function handleShow() {
@@ -21,9 +28,7 @@ const Form = () => {
   }
 
   function reset() {
-    setTitle('')
-    setAutor('')
-    setContent('')
+    setBlogInfo({ content: '', title: '', autor: '' })
     setShow(false)
   }
 
@@ -35,32 +40,38 @@ const Form = () => {
         <input
           required
           type='text'
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value)
-          }}
+          value={blogInfo.title}
+          name='title'
+          onChange={handleInputChange}
         />
         <label>Autor:</label>
         <input
           required
           type='text'
-          value={autor}
-          onChange={(e) => {
-            setAutor(e.target.value)
-          }}
+          value={blogInfo.autor}
+          name='autor'
+          onChange={handleInputChange}
         />
         <label> Content:</label>
         <textarea
           required
           className={style.textarea}
           type='text'
-          value={content}
-          onChange={handleContent}
+          name='content'
+          value={blogInfo.content}
+          onChange={(e) => {
+            handleContent(e)
+            handleInputChange(e)
+          }}
         />
       </form>
       <Button
         className={btnStyle.btn}
-        disabled={title === '' || autor === '' || content === ''}
+        disabled={
+          blogInfo.title === '' ||
+          blogInfo.autor === '' ||
+          blogInfo.content === ''
+        }
         type='button'
         onClick={handleShow}
       >
@@ -70,9 +81,9 @@ const Form = () => {
       <Button type='button' onClick={reset} className={btnStyle.btn}>
         reset
       </Button>
-      {show && <p>{title}</p>}
-      {show && <p>{autor}</p>}
-      {show && <p>{content}</p>}
+      {show && <p>{blogInfo.title}</p>}
+      {show && <p>{blogInfo.autor}</p>}
+      {show && <p>{blogInfo.content}</p>}
       {show && <p>{limitContent}</p>}
     </div>
   )

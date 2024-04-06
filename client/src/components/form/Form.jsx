@@ -1,18 +1,27 @@
 import style from './../form/form.module.scss'
-import { useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import Axios from 'axios'
 import Button from '../button/Button'
 import btnStyle from './../button/button.module.scss'
+import { Container } from '../../App'
 
 const Form = () => {
   const [limitContent, setLimitContent] = useState('')
   const [show, setShow] = useState(false)
+
+  const { blogList, setBlogList } = useContext(Container)
 
   const [blogInfo, setBlogInfo] = useState({
     title: '',
     autor: '',
     content: '',
   })
+
+  useEffect(() => {
+    Axios.get('http://localhost:3001/api/get').then((response) => {
+      setBlogList(response.data)
+    })
+  }, [])
 
   function getCurrentDate() {
     const currentDate = new Date()
@@ -31,9 +40,17 @@ const Form = () => {
       autor: blogInfo.autor,
       content: blogInfo.content,
       date: requestDate,
-    }).then(() => {
-      alert('successful insert information!!')
-    })
+    }).then(
+      setBlogList([
+        ...blogList,
+        {
+          title: blogInfo.title,
+          autor: blogInfo.autor,
+          content: blogInfo.content,
+          date: requestDate,
+        },
+      ])
+    )
   }
 
   function handleInputChange(e) {
@@ -45,10 +62,6 @@ const Form = () => {
     setBlogInfo({ ...blogInfo, content: text })
     setLimitContent(blogInfo.content.slice(0, 70))
   }
-
-  // function handleShow() {
-  //   setShow(true)
-  // }
 
   function reset() {
     setBlogInfo({ content: '', title: '', autor: '' })

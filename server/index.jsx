@@ -15,6 +15,13 @@ app.use(cors())
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.get('/api/get', (req, res) => {
+  const sqlSelect = 'SELECT * FROM blog_posts'
+  db.query(sqlSelect, (err, result) => {
+    res.send(result)
+  })
+})
+
 app.post('/api/insert', (req, res) => {
   const title = req.body.title
   const autor = req.body.autor

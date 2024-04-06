@@ -1,5 +1,6 @@
 import style from './../form/form.module.scss'
 import { useState } from 'react'
+import Axios from 'axios'
 import Button from '../button/Button'
 import btnStyle from './../button/button.module.scss'
 
@@ -13,6 +14,28 @@ const Form = () => {
     content: '',
   })
 
+  function getCurrentDate() {
+    const currentDate = new Date()
+    const year = currentDate.getFullYear()
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0')
+    const day = String(currentDate.getDate()).padStart(2, '0')
+
+    return `${year}-${month}-${day}`
+  }
+
+  const requestDate = getCurrentDate()
+
+  function submitInfo() {
+    Axios.post('http://localhost:3001/api/insert', {
+      title: blogInfo.title,
+      autor: blogInfo.autor,
+      content: blogInfo.content,
+      date: requestDate,
+    }).then(() => {
+      alert('successful insert information!!')
+    })
+  }
+
   function handleInputChange(e) {
     setBlogInfo({ ...blogInfo, [e.target.name]: e.target.value })
   }
@@ -23,9 +46,9 @@ const Form = () => {
     setLimitContent(blogInfo.content.slice(0, 70))
   }
 
-  function handleShow() {
-    setShow(true)
-  }
+  // function handleShow() {
+  //   setShow(true)
+  // }
 
   function reset() {
     setBlogInfo({ content: '', title: '', autor: '' })
@@ -73,7 +96,7 @@ const Form = () => {
           blogInfo.content === ''
         }
         type='button'
-        onClick={handleShow}
+        onClick={submitInfo}
       >
         submit
       </Button>

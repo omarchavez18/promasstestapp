@@ -2,9 +2,7 @@
 import style from './../card/card.module.scss'
 import Button from '../button/Button'
 
-function showInfo() {}
-
-const Card = ({ title, autor, content, date }) => {
+const Card = ({ title, autor, content, date, id, showCard }) => {
   return (
     <>
       <div className={style.card}>
@@ -20,7 +18,7 @@ const Card = ({ title, autor, content, date }) => {
 
         <p>
           <b>Content:</b>
-          {content}
+          {content.slice(0, 70)}
         </p>
 
         <p>
@@ -28,7 +26,12 @@ const Card = ({ title, autor, content, date }) => {
           {date}
         </p>
 
-        <Button type='button' onClick={showInfo}>
+        <Button
+          type='button'
+          onClick={() => {
+            showCard && showCard(id)
+          }}
+        >
           show card
         </Button>
       </div>

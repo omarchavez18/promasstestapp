@@ -12,7 +12,7 @@ const Card = ({ title, autor, content, date, id, showCard }) => {
         </p>
 
         <p>
-          <b>Autor:</b>
+          <b>Author:</b>
           {autor}
         </p>
 

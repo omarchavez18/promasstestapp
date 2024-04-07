@@ -53,7 +53,7 @@ function List() {
 
       <section className={style.sectionSearch}>
         <form>
-          <label>Search input with title, autor or content:</label>
+          <label>Search input with title, author, or content: </label>
           <input type='text' value={searchValue} onChange={handleSearchValue} />
         </form>
 

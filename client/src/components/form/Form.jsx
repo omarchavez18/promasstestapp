@@ -76,7 +76,7 @@ const Form = () => {
           name='title'
           onChange={handleInputChange}
         />
-        <label>Autor:</label>
+        <label>Author:</label>
         <input
           required
           type='text'

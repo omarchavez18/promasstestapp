@@ -6,9 +6,6 @@ import btnStyle from './../button/button.module.scss'
 import { Container } from '../../App'
 
 const Form = () => {
-  const [limitContent, setLimitContent] = useState('')
-  const [show, setShow] = useState(false)
-
   const { blogList, setBlogList } = useContext(Container)
 
   const [blogInfo, setBlogInfo] = useState({
@@ -21,7 +18,7 @@ const Form = () => {
     Axios.get('http://localhost:3001/api/get').then((response) => {
       setBlogList(response.data)
     })
-  }, [])
+  }, [setBlogList])
 
   function getCurrentDate() {
     const currentDate = new Date()
@@ -51,6 +48,7 @@ const Form = () => {
         },
       ])
     )
+    reset()
   }
 
   function handleInputChange(e) {
@@ -60,12 +58,10 @@ const Form = () => {
   function handleContent(e) {
     const text = e.target.value
     setBlogInfo({ ...blogInfo, content: text })
-    setLimitContent(blogInfo.content.slice(0, 70))
   }
 
   function reset() {
     setBlogInfo({ content: '', title: '', autor: '' })
-    setShow(false)
   }
 
   return (
@@ -117,10 +113,6 @@ const Form = () => {
       <Button type='button' onClick={reset} className={btnStyle.btn}>
         reset
       </Button>
-      {show && <p>{blogInfo.title}</p>}
-      {show && <p>{blogInfo.autor}</p>}
-      {show && <p>{blogInfo.content}</p>}
-      {show && <p>{limitContent}</p>}
     </div>
   )
 }
